@@ -1,26 +1,39 @@
 package com.clinicaOdontologica.service;
 
+import com.clinicaOdontologica.dto.PacienteDto;
 import com.clinicaOdontologica.model.Paciente;
 import com.clinicaOdontologica.repository.IPacienteRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PacienteService implements IGenericaService <Paciente>{
+public class PacienteService implements IGenericaService <PacienteDto, Long> {
 
     @Autowired
     private IPacienteRepository pacienteRepository;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @Override
-    public Paciente buscar(Long id) {
-        return pacienteRepository.findById(id).orElse(null);
+    public PacienteDto buscar(Long id) {
+        Paciente paciente = pacienteRepository.findById(id).orElse(null);
+        return mapper.convertValue(paciente,PacienteDto.class);
     }
 
     @Override
-    public Paciente guardar(Paciente paciente) {
-        return pacienteRepository.save(paciente);
+    public PacienteDto guardar(PacienteDto pacienteDto) {
+        Paciente paciente = new Paciente();
+        paciente.setDomicilio(pacienteDto.getDomicilio());
+        paciente.setNombre(pacienteDto.getNombre());
+        paciente.setApellido(pacienteDto.getApellido());
+        paciente.setDni(pacienteDto.getDni());
+        paciente.setFechaIngreso(pacienteDto.getFechaIngreso());
+        return mapper.convertValue(pacienteRepository.save(paciente),PacienteDto.class);
+
     }
 
     @Override
@@ -30,22 +43,25 @@ public class PacienteService implements IGenericaService <Paciente>{
     }
 
     @Override
-    public List<Paciente> buscarTodos() {
-        return pacienteRepository.findAll();
+    public List<PacienteDto> buscarTodos() {
+        List<PacienteDto> lp = mapper.convertValue(pacienteRepository.findAll(), List.class);
+        return lp;
     }
 
     @Override
-    public Paciente actualizar(Paciente paciente) {
-       Paciente p= this.buscar(paciente.getId());
-       if(p != null){
-           p.setNombre(paciente.getNombre());
-           p.setApellido(paciente.getApellido());
-           p.setDni(paciente.getDni());
-           p.setDomicilio(paciente.getDomicilio());
-           p.setFechaIngreso(paciente.getFechaIngreso());
-           return pacienteRepository.save(p);
-       }else{
-           return null;
-       }
+    public PacienteDto actualizar(PacienteDto pacienteDto,Long id) {
+        Paciente paciente = mapper.convertValue(this.buscar(id),Paciente.class);
+        if(paciente != null){
+            paciente.setDomicilio(pacienteDto.getDomicilio());
+            paciente.setNombre(pacienteDto.getNombre());
+            paciente.setApellido(pacienteDto.getApellido());
+            paciente.setDni(pacienteDto.getDni());
+            paciente.setFechaIngreso(pacienteDto.getFechaIngreso());
+            return mapper.convertValue(pacienteRepository.save(paciente),PacienteDto.class);
+        }else{
+            return null;
+        }
+
     }
+
 }

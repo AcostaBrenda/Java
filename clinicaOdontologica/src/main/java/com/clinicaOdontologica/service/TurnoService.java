@@ -1,26 +1,37 @@
 package com.clinicaOdontologica.service;
 
+import com.clinicaOdontologica.dto.TurnoDto;
 import com.clinicaOdontologica.model.Turno;
 import com.clinicaOdontologica.repository.ITurnoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TurnoService implements IGenericaService <Turno>{
+public class TurnoService implements IGenericaService <TurnoDto, Long> {
 
     @Autowired
     private ITurnoRepository turnoRepository;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @Override
-    public Turno buscar(Long id) {
-        return turnoRepository.findById(id).orElse(null);
+    public TurnoDto buscar(Long id) {
+        Turno turno = turnoRepository.findById(id).orElse(null);
+        return mapper.convertValue(turno,TurnoDto.class);
     }
 
     @Override
-    public Turno guardar(Turno turno) {
-        return turnoRepository.save(turno);
+    public TurnoDto guardar(TurnoDto turnoDto) {
+        Turno turno = new Turno();
+        turno.setPaciente(turnoDto.getPaciente());
+        turno.setOdontologo(turnoDto.getOdontologo());
+        turno.setFecha(turnoDto.getFecha());
+        return mapper.convertValue(turnoRepository.save(turno),TurnoDto.class);
+
     }
 
     @Override
@@ -30,20 +41,23 @@ public class TurnoService implements IGenericaService <Turno>{
     }
 
     @Override
-    public List<Turno> buscarTodos() {
-        return turnoRepository.findAll();
+    public List<TurnoDto> buscarTodos() {
+        List<TurnoDto> lt = mapper.convertValue(turnoRepository.findAll(), List.class);
+        return lt;
     }
 
     @Override
-    public Turno actualizar(Turno turno) {
-       Turno t= this.buscar(turno.getId());
-       if(t != null){
-        t.setFecha(turno.getFecha());
-        t.setPaciente(turno.getPaciente());
-        t.setOdontologo(turno.getOdontologo());
-        return turnoRepository.save(t);
-       }else{
-           return null;
-       }
+    public TurnoDto actualizar(TurnoDto turnoDto,Long id) {
+        Turno turno = mapper.convertValue(this.buscar(id),Turno.class);
+        if(turno != null){
+            turno.setPaciente(turnoDto.getPaciente());
+            turno.setOdontologo(turnoDto.getOdontologo());
+            turno.setFecha(turnoDto.getFecha());
+            return mapper.convertValue(turnoRepository.save(turno),TurnoDto.class);
+        }else{
+            return null;
+        }
+
     }
+
 }

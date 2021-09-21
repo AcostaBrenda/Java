@@ -1,6 +1,6 @@
 package com.clinicaOdontologica.controller;
 
-import com.clinicaOdontologica.model.Turno;
+import com.clinicaOdontologica.dto.TurnoDto;
 import com.clinicaOdontologica.service.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,8 @@ public class TurnoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity guardar(@RequestBody Turno turno){
-        return ResponseEntity.ok(turnoService.guardar(turno));
+    public ResponseEntity guardar(@RequestBody TurnoDto turnoDto){
+        return ResponseEntity.ok(turnoService.guardar(turnoDto));
     }
 
     @DeleteMapping("/{id}")
@@ -34,9 +34,9 @@ public class TurnoController {
         return ResponseEntity.ok(turnoService.buscarTodos());
     }
 
-    @PutMapping("/")
-    public ResponseEntity actualizar(@RequestBody Turno turno){
-        return ResponseEntity.ok(turnoService.actualizar(turno));
+    @PutMapping("/{id}")
+    public ResponseEntity actualizar(@RequestBody TurnoDto turnoDto, @PathVariable Long id){
+        return ResponseEntity.ok(turnoService.actualizar(turnoDto, id));
     }
 
 }

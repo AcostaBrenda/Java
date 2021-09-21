@@ -1,6 +1,6 @@
 package com.clinicaOdontologica.controller;
 
-import com.clinicaOdontologica.model.Domicilio;
+import com.clinicaOdontologica.dto.DomicilioDto;
 import com.clinicaOdontologica.service.DomicilioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,8 @@ public class DomicilioController {
     }
 
     @PostMapping("/")
-    public ResponseEntity guardar(@RequestBody Domicilio domicilio){
-        return ResponseEntity.ok(domicilioService.guardar(domicilio));
+    public ResponseEntity guardar(@RequestBody DomicilioDto domicilioDto){
+        return ResponseEntity.ok(domicilioService.guardar(domicilioDto));
     }
 
     @DeleteMapping("/{id}")
@@ -34,9 +34,9 @@ public class DomicilioController {
         return ResponseEntity.ok(domicilioService.buscarTodos());
     }
 
-    @PutMapping("/")
-    public ResponseEntity actualizar(@RequestBody Domicilio domicilio){
-        return ResponseEntity.ok(domicilioService.actualizar(domicilio));
+    @PutMapping("/{id}")
+    public ResponseEntity actualizar(@RequestBody DomicilioDto domicilioDto, @PathVariable Long id){
+        return ResponseEntity.ok(domicilioService.actualizar(domicilioDto, id));
     }
 
 }
