@@ -7,6 +7,6 @@ Trabajo práctico integrador de la materia Backend del tercer bimestre de la car
 --> medicalClinic:
 
 (aún en proceso)
-Es una versión mejorada, mas compleja y genérica del proyecto anterior. Es un sistema que va a permitir, a traves del logueo con diferentes roles, administrar una clinica medica, con doctores con diferentes especialidades, pacientes con obra social incluida y los turnos tendran estados(habilitado o deshabilitado segun si ya pasó la fecha correspondiente).
+Es una versión mejorada, mas compleja y genérica del proyecto anterior. Es un sistema que va a permitir, a traves del logueo con diferentes roles, administrar una clinica medica, con doctores con diferentes especialidades, pacientes con obra social incluida y los turnos tendran estados(habilitado o deshabilitado) segun si ya pasó la fecha correspondiente.
 
 
