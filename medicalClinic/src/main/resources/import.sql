@@ -1,0 +1,1 @@
+--falta completar archivo import de carga de datos en las tablas automaticos para hibernate(create)

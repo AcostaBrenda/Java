@@ -1,6 +1,6 @@
 package com.clinicaOdontologica.controller;
 
-import com.clinicaOdontologica.dto.OdontologoDto;
+import com.clinicaOdontologica.DTO.OdontologoDTO;
 import com.clinicaOdontologica.service.OdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class OdontologoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity guardar(@RequestBody OdontologoDto odontologoDto){
+    public ResponseEntity guardar(@RequestBody OdontologoDTO odontologoDto){
         return ResponseEntity.ok(odontologoService.guardar(odontologoDto));
     }
 
@@ -35,7 +35,7 @@ public class OdontologoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity actualizar(@RequestBody OdontologoDto odontologoDto, @PathVariable Long id){
+    public ResponseEntity actualizar(@RequestBody OdontologoDTO odontologoDto, @PathVariable Long id){
         return ResponseEntity.ok(odontologoService.actualizar(odontologoDto, id));
     }
 

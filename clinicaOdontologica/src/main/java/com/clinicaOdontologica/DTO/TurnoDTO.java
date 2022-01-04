@@ -1,4 +1,4 @@
-package com.clinicaOdontologica.dto;
+package com.clinicaOdontologica.DTO;
 
 import com.clinicaOdontologica.model.Odontologo;
 import com.clinicaOdontologica.model.Paciente;
@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TurnoDto {
+public class TurnoDTO {
     private Paciente paciente;
     private Odontologo odontologo;
     private LocalDate fecha;

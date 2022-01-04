@@ -11,7 +11,7 @@ import java.util.HashSet;
 @Entity
 public class Paciente {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)    //bidireccional

@@ -1,16 +1,19 @@
 package com.clinicaOdontologica.service;
 
-import com.clinicaOdontologica.dto.TurnoDto;
+import com.clinicaOdontologica.DTO.TurnoDTO;
+import com.clinicaOdontologica.exceptions.ResourceNotFoundException;
 import com.clinicaOdontologica.model.Turno;
 import com.clinicaOdontologica.repository.ITurnoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TurnoService implements IGenericaService <TurnoDto, Long> {
+public class TurnoService implements IGenericaService <TurnoDTO, Long> {
 
     @Autowired
     private ITurnoRepository turnoRepository;
@@ -18,46 +21,59 @@ public class TurnoService implements IGenericaService <TurnoDto, Long> {
     @Autowired
     private ObjectMapper mapper;
 
+    static final Logger logger = Logger.getLogger(TurnoService.class);
+
     @Override
-    public TurnoDto buscar(Long id) {
+    public TurnoDTO buscar(Long id) throws ResourceNotFoundException {
         Turno turno = turnoRepository.findById(id).orElse(null);
-        return mapper.convertValue(turno,TurnoDto.class);
+    if(turno != null){
+        return mapper.convertValue(turno, TurnoDTO.class);
+    }else{
+        throw new ResourceNotFoundException("El turno no existe en el sistema");
+          }
     }
 
     @Override
-    public TurnoDto guardar(TurnoDto turnoDto) {
+    public TurnoDTO guardar(TurnoDTO turnoDto) {
         Turno turno = new Turno();
         turno.setPaciente(turnoDto.getPaciente());
         turno.setOdontologo(turnoDto.getOdontologo());
         turno.setFecha(turnoDto.getFecha());
-        return mapper.convertValue(turnoRepository.save(turno),TurnoDto.class);
+        return mapper.convertValue(turnoRepository.save(turno), TurnoDTO.class);
 
     }
 
     @Override
-    public Boolean eliminar(Long id) {
-        turnoRepository.deleteById(id);
-        return (this.buscar(id)== null);
-    }
+    public Boolean eliminar(Long id) throws ResourceNotFoundException{
+        (turnoRepository.findById(id).isPresent())?
+                turnoRepository.deleteById(id):
+                throw new ResourceNotFoundException("El turno no existe en el sistema");
+        }
 
     @Override
-    public List<TurnoDto> buscarTodos() {
-        List<TurnoDto> lt = mapper.convertValue(turnoRepository.findAll(), List.class);
-        return lt;
+    public List<TurnoDTO> buscarTodos() {
+        List<TurnoDTO> listaTurnosDTO = new ArrayList<>();
+        List<Turno> listaTurnos = turnoRepository.findAll();
+        for (Turno turno : listaTurnos) {
+            TurnoDTO turnoDTO = mapper.convertValue(turno, TurnoDTO.class);
+            listaTurnosDTO.add(turnoDTO);
+        }
+        logger.info("Lista de turnos existentes: " + listaTurnosDTO);
+        return listaTurnosDTO;
     }
 
+
     @Override
-    public TurnoDto actualizar(TurnoDto turnoDto,Long id) {
+    public TurnoDTO actualizar(TurnoDTO turnoDto, Long id) throws ResourceNotFoundException {
         Turno turno = mapper.convertValue(this.buscar(id),Turno.class);
         if(turno != null){
             turno.setPaciente(turnoDto.getPaciente());
             turno.setOdontologo(turnoDto.getOdontologo());
             turno.setFecha(turnoDto.getFecha());
-            return mapper.convertValue(turnoRepository.save(turno),TurnoDto.class);
+            return mapper.convertValue(turnoRepository.save(turno), TurnoDTO.class);
         }else{
-            return null;
+           throw new ResourceNotFoundException("El turno no existe en el sistema");
         }
 
     }
-
 }
