@@ -24,17 +24,17 @@ public class TurnoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity <TurnoDTO>guardar(@RequestBody TurnoDTO turnoDto){
+    public ResponseEntity<TurnoDTO>guardar(@RequestBody TurnoDTO turnoDto){
         return ResponseEntity.ok(turnoService.guardar(turnoDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> eliminar(@PathVariable Long id) throws ResourceNotFoundException{
+    public ResponseEntity<Boolean> eliminar(@PathVariable Long id){
         return ResponseEntity.ok(turnoService.eliminar(id));
     }
 
     @GetMapping("/")
-    public ResponseEntity<List>buscarTodos(){
+    public ResponseEntity<List<TurnoDTO>>buscarTodos(){
         return ResponseEntity.ok(turnoService.buscarTodos());
     }
 

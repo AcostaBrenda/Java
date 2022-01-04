@@ -8,7 +8,7 @@ public interface IGenericaService <T, K> {
 
     T buscar(K k)throws ResourceNotFoundException;
     T guardar(T t);
-    Boolean eliminar(K k) throws ResourceNotFoundException;
+    Boolean eliminar(K k);
     List<T> buscarTodos();
     T actualizar(T t, K k) throws ResourceNotFoundException;
 

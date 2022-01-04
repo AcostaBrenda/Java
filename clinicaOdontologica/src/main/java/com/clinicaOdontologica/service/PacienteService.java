@@ -1,10 +1,8 @@
 package com.clinicaOdontologica.service;
 
 import com.clinicaOdontologica.DTO.PacienteDTO;
-import com.clinicaOdontologica.DTO.TurnoDTO;
 import com.clinicaOdontologica.exceptions.ResourceNotFoundException;
 import com.clinicaOdontologica.model.Paciente;
-import com.clinicaOdontologica.model.Turno;
 import com.clinicaOdontologica.repository.IPacienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -49,10 +47,11 @@ public class PacienteService implements IGenericaService <PacienteDTO, Long> {
     }
 
     @Override
-    public Boolean eliminar(Long id) throws ResourceNotFoundException {
-        (pacienteRepository.findById(id).isPresent())?
-                pacienteRepository.deleteById(id):
-                throw new ResourceNotFoundException("El paciente no existe en el sistema");
+    public Boolean eliminar(Long id){
+        if(pacienteRepository.findById(id).isPresent()){
+            pacienteRepository.deleteById(id);
+        }
+        return pacienteRepository.findById(id).isPresent();
     }
 
     @Override

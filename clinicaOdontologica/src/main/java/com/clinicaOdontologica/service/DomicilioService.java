@@ -1,10 +1,8 @@
 package com.clinicaOdontologica.service;
 
 import com.clinicaOdontologica.DTO.DomicilioDTO;
-import com.clinicaOdontologica.DTO.TurnoDTO;
 import com.clinicaOdontologica.exceptions.ResourceNotFoundException;
 import com.clinicaOdontologica.model.Domicilio;
-import com.clinicaOdontologica.model.Turno;
 import com.clinicaOdontologica.repository.IDomicilioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -46,11 +44,12 @@ public class DomicilioService implements IGenericaService <DomicilioDTO, Long> {
     }
 
     @Override
-    public Boolean eliminar(Long id) throws ResourceNotFoundException{
-         (domicilioRepository.findById(id).isPresent())?
-                 domicilioRepository.deleteById(id):
-                 throw new ResourceNotFoundException("El domicilio no existe en el sistema");
-         }
+    public Boolean eliminar(Long id){
+        if(domicilioRepository.findById(id).isPresent()){
+            domicilioRepository.deleteById(id);
+        }
+        return domicilioRepository.findById(id).isPresent();
+    }
 
     @Override
     public List<DomicilioDTO> buscarTodos() {

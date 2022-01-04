@@ -44,11 +44,12 @@ public class TurnoService implements IGenericaService <TurnoDTO, Long> {
     }
 
     @Override
-    public Boolean eliminar(Long id) throws ResourceNotFoundException{
-        (turnoRepository.findById(id).isPresent())?
-                turnoRepository.deleteById(id):
-                throw new ResourceNotFoundException("El turno no existe en el sistema");
+    public Boolean eliminar(Long id){
+        if(turnoRepository.findById(id).isPresent()){
+            turnoRepository.deleteById(id);
         }
+        return turnoRepository.findById(id).isPresent();
+    }
 
     @Override
     public List<TurnoDTO> buscarTodos() {

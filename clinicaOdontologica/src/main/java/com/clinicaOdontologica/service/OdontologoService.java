@@ -1,9 +1,8 @@
 package com.clinicaOdontologica.service;
 
 import com.clinicaOdontologica.DTO.OdontologoDTO;
-import com.clinicaOdontologica.DTO.TurnoDTO;
+import com.clinicaOdontologica.exceptions.ResourceNotFoundException;
 import com.clinicaOdontologica.model.Odontologo;
-import com.clinicaOdontologica.model.Turno;
 import com.clinicaOdontologica.repository.IOdontologoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -25,9 +24,13 @@ public class OdontologoService implements IGenericaService <OdontologoDTO, Long>
     static final Logger logger = Logger.getLogger(OdontologoService.class);
 
     @Override
-    public OdontologoDTO buscar(Long id) {
+    public OdontologoDTO buscar(Long id) throws ResourceNotFoundException {
         Odontologo odontologo = odontologoRepository.findById(id).orElse(null);
-        return mapper.convertValue(odontologo, OdontologoDTO.class);
+        if(odontologo != null){
+            return mapper.convertValue(odontologo , OdontologoDTO.class);
+        }else{
+            throw new ResourceNotFoundException("El odontologo no existe en el sistema");
+        }
     }
 
     @Override
@@ -42,8 +45,10 @@ public class OdontologoService implements IGenericaService <OdontologoDTO, Long>
 
     @Override
     public Boolean eliminar(Long id) {
-        odontologoRepository.deleteById(id);
-        return (this.buscar(id)== null);
+        if(odontologoRepository.findById(id).isPresent()){
+            odontologoRepository.deleteById(id);
+        }
+        return odontologoRepository.findById(id).isPresent();
     }
 
     @Override
@@ -59,7 +64,7 @@ public class OdontologoService implements IGenericaService <OdontologoDTO, Long>
     }
 
     @Override
-    public OdontologoDTO actualizar(OdontologoDTO odontologoDto, Long id) {
+    public OdontologoDTO actualizar(OdontologoDTO odontologoDto, Long id) throws ResourceNotFoundException {
         Odontologo o = mapper.convertValue(this.buscar(id),Odontologo.class);
         if(o != null){
             o.setNombre(odontologoDto.getNombre());
@@ -67,7 +72,7 @@ public class OdontologoService implements IGenericaService <OdontologoDTO, Long>
             o.setMatricula(odontologoDto.getMatricula());
             return mapper.convertValue(odontologoRepository.save(o), OdontologoDTO.class);
         }else{
-        return null;
+            throw new ResourceNotFoundException("El odontologo no existe en el sistema");
     }
 
   }

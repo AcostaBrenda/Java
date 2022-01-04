@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/domicilios")
@@ -17,27 +19,27 @@ public class DomicilioController {
     private DomicilioService domicilioService;
 
     @GetMapping("/{id}")
-    public ResponseEntity buscar(@PathVariable Long id){
+    public ResponseEntity<DomicilioDTO>buscar(@PathVariable Long id)throws ResourceNotFoundException{
         return ResponseEntity.ok(domicilioService.buscar(id));
     }
 
     @PostMapping("/")
-    public ResponseEntity guardar(@RequestBody DomicilioDTO domicilioDto){
+    public ResponseEntity<DomicilioDTO>guardar(@RequestBody DomicilioDTO domicilioDto){
         return ResponseEntity.ok(domicilioService.guardar(domicilioDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity eliminar(@PathVariable Long id){
+    public ResponseEntity<Boolean>eliminar(@PathVariable Long id){
         return ResponseEntity.ok(domicilioService.eliminar(id));
     }
 
     @GetMapping("/")
-    public ResponseEntity buscarTodos(){
+    public ResponseEntity<List<DomicilioDTO>> buscarTodos(){
         return ResponseEntity.ok(domicilioService.buscarTodos());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity actualizar(@RequestBody DomicilioDTO domicilioDto, @PathVariable Long id){
+    public ResponseEntity<DomicilioDTO>actualizar(@RequestBody DomicilioDTO domicilioDto, @PathVariable Long id)throws ResourceNotFoundException {
         return ResponseEntity.ok(domicilioService.actualizar(domicilioDto, id));
     }
 
