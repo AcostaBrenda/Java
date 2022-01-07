@@ -28,6 +28,6 @@ public class GenericPerson {
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)                          //unidireccional
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 }
