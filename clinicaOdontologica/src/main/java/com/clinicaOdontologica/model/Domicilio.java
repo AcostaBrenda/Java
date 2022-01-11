@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,16 +19,16 @@ public class Domicilio {
     private Long id;
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)    //bidireccional
-    private Set<Paciente> pacientes = new HashSet<>();
+    private List<Paciente> pacientes = new ArrayList<>();
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)    //bidireccional
-    private Set<Odontologo> odontologos = new HashSet<>();
+    private List<Odontologo> odontologos = new ArrayList<>();
 
     @Column(nullable = false)
     private String calle;
 
-    @Column(length = 5)
-    private Integer numero;
+    @Column(length = 5, nullable = false)
+    private int numero;
 
     @Column(nullable = false)
     private String localidad;

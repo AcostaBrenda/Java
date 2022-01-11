@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,7 +21,11 @@ public class TurnoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TurnoDTO> buscar(@PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(turnoService.buscar(id));
+        try{
+            return ResponseEntity.ok(turnoService.buscar(id));
+        } catch (ResourceNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @PostMapping("/")
@@ -40,7 +45,11 @@ public class TurnoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TurnoDTO> actualizar(@RequestBody TurnoDTO turnoDto, @PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(turnoService.actualizar(turnoDto, id));
+        try{
+            return ResponseEntity.ok(turnoService.actualizar(turnoDto, id));
+        } catch (ResourceNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @ExceptionHandler({ResourceNotFoundException.class})

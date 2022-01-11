@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class Odontologo {
     private Long id;
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)    //bidireccional
-    private Set<Turno> turnos = new HashSet<>();
+    private List<Turno> turnos = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)                     //bidireccional
     @JoinColumn(name = "domicilio_id", nullable = false)

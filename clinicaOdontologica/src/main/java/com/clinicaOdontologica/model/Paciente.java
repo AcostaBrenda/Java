@@ -6,8 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +19,7 @@ public class Paciente {
     private Long id;
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)    //bidireccional
-    private Set<Turno> turnos = new HashSet<>();
+    private List<Turno> turnos = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)                       //bidireccional
     @JoinColumn(name = "domicilio_id", nullable = false)

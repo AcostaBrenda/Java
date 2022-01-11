@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,7 +21,11 @@ public class PacienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PacienteDTO>buscar(@PathVariable Long id) throws ResourceNotFoundException{
-    return ResponseEntity.ok(pacienteService.buscar(id));
+        try{
+            return ResponseEntity.ok(pacienteService.buscar(id));
+        } catch (ResourceNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @PostMapping("/")
@@ -40,7 +45,11 @@ public class PacienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PacienteDTO>actualizar(@RequestBody PacienteDTO pacienteDto, @PathVariable Long id)throws ResourceNotFoundException{
-        return ResponseEntity.ok(pacienteService.actualizar(pacienteDto, id));
+        try{
+            return ResponseEntity.ok(pacienteService.actualizar(pacienteDto, id));
+        } catch (ResourceNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @ExceptionHandler({ResourceNotFoundException.class})

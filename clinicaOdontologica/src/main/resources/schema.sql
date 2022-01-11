@@ -1,4 +1,42 @@
-create table IF NOT EXISTS domicilio(id int auto_increment primary key,calle varchar(255),numero varchar (5),localidad varchar (255),provincia varchar (255));
-create table IF NOT EXISTS paciente(id int auto_increment primary key,nombre varchar(255),apellido varchar (255),dni varchar (8),fecha_ingreso TIMESTAMP WITHOUT TIME ZONE,domicilio_id int);
-create table IF NOT EXISTS odontologo(id int auto_increment primary key,nombre varchar(255),apellido varchar (255),matricula int);
-create table IF NOT EXISTS turno(id int auto_increment primary key,odontologo_id int,paciente_id int,fecha TIMESTAMP WITHOUT TIME ZONE);
+DROP TABLE IF EXISTS domicilio;
+
+CREATE TABLE domicilio (
+id INT AUTO_INCREMENT PRIMARY KEY,
+calle VARCHAR(255)NOT NULL,
+numero INT (5)NOT NULL,
+localidad VARCHAR (255)NOT NULL,
+provincia VARCHAR (255)NOT NULL;
+);
+
+
+DROP TABLE IF EXISTS paciente;
+
+CREATE TABLE paciente (
+id INT AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR(255),
+apellido VARCHAR(255),
+dni VARCHAR (8),
+fecha_ingreso TIMESTAMP WITHOUT TIME ZONE,
+domicilio_id INT
+);
+
+
+DROP TABLE IF EXISTS odontologo;
+
+CREATE TABLE odontologo (
+id INT AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR(255),
+apellido VARCHAR(255),
+matricula INT,
+domicilio_id INT
+);
+
+
+DROP TABLE IF EXISTS turno;
+
+CREATE TABLE turno (
+id INT AUTO_INCREMENT PRIMARY KEY,
+odontologo_id INT,
+paciente_id INT,
+fecha TIMESTAMP WITHOUT TIME ZONE
+);
